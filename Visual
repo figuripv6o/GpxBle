@@ -1,0 +1,9 @@
+GPX
+ ├── metadata
+ ├── wpt
+ ├── rte
+ │    └── rtept
+ ├── trk
+ │    └── trkseg
+ │         └── trkpt
+ └── extensions
