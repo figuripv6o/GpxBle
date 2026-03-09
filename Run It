@@ -1,0 +1,59 @@
+From repo root:
+Copy code
+Bash
+cd src
+python ble_to_gpx.py
+Output:
+Copy code
+
+output/ble_track.gpx
+What You’ll See on the Map
+Each BLE detection becomes a track point with metadata.
+GPX snippet:
+Copy code
+Xml
+<trkpt lat="34.052310" lon="-118.243720">
+  <extensions>
+    <device>AA:BB:CC:DD:EE:FF</device>
+    <rssi>-58</rssi>
+  </extensions>
+</trkpt>
+Open with:
+Google Earth
+QGIS
+Garmin BaseCamp
+GPX Viewer apps
+You’ll see your movement path where the BLE device was detected.
+🔥 Useful Upgrades
+Device Filter
+Export only one MAC:
+Copy code
+Python
+if scan["device"] != target_device:
+    continue
+RSSI Heat Detection
+Mark strong signal locations:
+Copy code
+Python
+if scan["rssi"] > -60:
+    # create waypoint
+Multiple Device Tracks
+Create one track per MAC address.
+Export GeoJSON too
+Useful for web maps.
+If you want, next we can turn GpxBle into a full toolkit:
+Add:
+BLE → GPX CLI
+Copy code
+
+python gpxble.py --input scans.json --device AA:BB --output map.gpx
+BLE Map Visualizer
+Copy code
+
+Leaflet / Mapbox map viewer
+Firebase scan logging
+Termux live exporter
+Copy code
+
+ble scan → json → auto GPX
+That would turn GpxBle into a full BLE recon mapper. 🧭📡🐝
