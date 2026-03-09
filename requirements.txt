@@ -1,0 +1,81 @@
+requirements.txt
+Copy code
+Txt
+gpxpy
+Install:
+Copy code
+Bash
+pip install -r requirements.txt
+Example BLE Scan Data
+data/sample_scans.json
+Copy code
+Json
+[
+  {
+    "time": "2026-03-07T17:00:00Z",
+    "lat": 34.052235,
+    "lon": -118.243683,
+    "rssi": -61,
+    "device": "AA:BB:CC:DD:EE:FF"
+  },
+  {
+    "time": "2026-03-07T17:00:10Z",
+    "lat": 34.052310,
+    "lon": -118.243720,
+    "rssi": -58,
+    "device": "AA:BB:CC:DD:EE:FF"
+  }
+]
+Core Script
+src/ble_to_gpx.py
+Copy code
+Python
+import json
+import gpxpy
+import gpxpy.gpx
+
+INPUT_FILE = "../data/sample_scans.json"
+OUTPUT_FILE = "../output/ble_track.gpx"
+
+def load_scans(path):
+    with open(path) as f:
+        return json.load(f)
+
+def create_gpx(scans):
+    gpx = gpxpy.gpx.GPX()
+
+    track = gpxpy.gpx.GPXTrack(name="BLE Scan Track")
+    gpx.tracks.append(track)
+
+    segment = gpxpy.gpx.GPXTrackSegment()
+    track.segments.append(segment)
+
+    for scan in scans:
+        point = gpxpy.gpx.GPXTrackPoint(
+            latitude=scan["lat"],
+            longitude=scan["lon"]
+        )
+
+        point.extensions.append(
+            f"<device>{scan['device']}</device>"
+        )
+
+        point.extensions.append(
+            f"<rssi>{scan['rssi']}</rssi>"
+        )
+
+        segment.points.append(point)
+
+    return gpx
+
+def main():
+    scans = load_scans(INPUT_FILE)
+    gpx = create_gpx(scans)
+
+    with open(OUTPUT_FILE, "w") as f:
+        f.write(gpx.to_xml())
+
+    print("GPX file created:", OUTPUT_FILE)
+
+if __name__ == "__main__":
+    main()
