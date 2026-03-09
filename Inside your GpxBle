@@ -1,0 +1,14 @@
+GpxBle/
+│
+├─ README.md
+├─ requirements.txt
+│
+├─ data/
+│   └─ sample_scans.json
+│
+├─ output/
+│   └─ ble_track.gpx
+│
+└─ src/
+    ├─ ble_to_gpx.py
+    └─ parser.py
